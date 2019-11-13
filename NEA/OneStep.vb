@@ -1,15 +1,22 @@
 ﻿Public Class OneStep
+
+    'Maximise: x + 1.5y       
+    '-2x + y ≤ 0            
+    '0.2x + 0.6y ≤ 13      
+    'x + y ≤ 45                   
+
+
     Inherits Tableau
-    Public Sub New(mymenu As IMenu, mydisplay As Integer) 'This subprogram creates the simplex tableau
+    Public Sub New(mymenu As IMenu, mydisplay As List(Of Integer)) 'This subprogram creates the simplex tableau
         MyBase.New(mymenu, mydisplay)
     End Sub
 
-    Public Sub New(simplextableau As Double(,), MyTopRow As List(Of String), mymenu As IMenu, mydisplay As Integer)
+    Public Sub New(simplextableau As Double(,), MyTopRow As List(Of String), mymenu As IMenu, mydisplay As List(Of Integer))
         MyBase.New(simplextableau, MyTopRow, mymenu, mydisplay)
     End Sub
 
     Private Sub CompletedTable() 'This subprogram interprets the table to output the values for the variables
-        If DisplayMode = 2 Then Display(-2, -2)
+        If DisplayMode(0) = 2 Then Display(-2, -2)
         Console.SetCursorPosition(0, Console.CursorTop - 1)
         Console.WriteLine("Tableau is complete! Values for all the variables are shown below: ")
         Dim basicvariabletest As Double
@@ -59,9 +66,10 @@
         Dim RatioTest As Integer
         Dim BannedColumns As New List(Of Integer)
         'Check for negative values and pivot column
+        If DisplayMode(0) = 1 Then Display(PivotColumn, PivotRow)
         Do
             BannedColumns.Clear()
-            Display(PivotColumn, PivotRow)
+            If DisplayMode(0) = 0 Then Display(PivotColumn, PivotRow)
             Do
                 PivotColumn = -1
                 TopOfPivotColumn = 0
@@ -107,7 +115,7 @@
                 End If
             Next
             Tableau(PivotColumn, PivotRow) = 1
-
+            If DisplayMode(0) = 1 Then Display(PivotColumn, PivotRow)
             'Making all the other values in the pivot column 0
             For y = 0 To TableHeight
                 If y <> PivotRow Then
@@ -117,6 +125,7 @@
                         End If
                     Next
                     Tableau(PivotColumn, y) = 0
+                    If DisplayMode(0) = 1 Then Display(PivotColumn, PivotRow)
                 End If
             Next
         Loop

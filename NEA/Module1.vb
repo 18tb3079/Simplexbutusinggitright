@@ -110,7 +110,7 @@
         Dim MyMenu As IMenu
         Dim choice As ConsoleKey = 0
         Dim OptimisationProblem As Integer
-        Dim displaymode As Integer = 0
+        Dim displaymode As List(Of Integer) = New List(Of Integer)({0, 1, 1})
         Do
             Console.Clear()
             'Try
@@ -127,9 +127,11 @@
                     ElseIf OptimisationProblem = 4 Then
                         MyMenu = New Tree()
                     ElseIf OptimisationProblem = 5 Then 'Settings
-                        Console.CursorVisible = False
-                        displaymode = OneDMenu(New List(Of String)({"Display each iteration", "Display each step", "Display only the completed tableau"}), "Select Display Mode", "Blank")(0)
-                    Else
+                    Console.CursorVisible = False
+                    displaymode.Clear()
+                    displaymode.Add(OneDMenu(New List(Of String)({"Display each iteration", "Display each step", "Display only the completed tableau"}), "Select Display Mode", "Blank")(0))
+                    displaymode.AddRange(OneDMenu(New List(Of String)({"Highlight pivot row", "Highlight pivot column"}), "Select Highlighting Options", "Boolean"))
+                Else
                         MyMenu = New SimplexMenu()
                     End If
                 Loop Until OptimisationProblem <> 5

@@ -5,7 +5,7 @@
     'x >= 1
     ' x + y <= 2
 
-    Public Sub New(mymenu As IMenu, mydisplay As Integer) 'This subprogram creates the simplex tableau
+    Public Sub New(mymenu As IMenu, mydisplay As List(Of Integer)) 'This subprogram creates the simplex tableau
         MyBase.New(mymenu, mydisplay)
     End Sub
     Public Overrides Function Simplex()
@@ -14,9 +14,10 @@
         Dim PivotRow As Integer = -1
         Dim RatioTest As Integer
         Dim BannedColumns As New List(Of Integer)
+        If DisplayMode(0) = 1 Then Display(PivotColumn, PivotRow)
         Do
             'Find the biggest value in the second objective function (if it is zero then end)
-            Display(PivotColumn, PivotColumn)
+            If DisplayMode(0) = 0 Then Display(PivotColumn, PivotRow)
             BannedColumns.Clear()
             Do
                 PivotColumn = -1
@@ -78,7 +79,7 @@
                 End If
             Next
             Tableau(PivotColumn, PivotRow) = 1
-
+            If DisplayMode(0) = 1 Then Display(PivotColumn, PivotRow)
             'Making all the other values in the pivot column 0
             For y = 0 To TableHeight
                 If y <> PivotRow Then
@@ -88,6 +89,7 @@
                         End If
                     Next
                     Tableau(PivotColumn, y) = 0
+                    If DisplayMode(0) = 1 Then Display(PivotColumn, PivotRow)
                 End If
             Next
         Loop

@@ -227,57 +227,69 @@
                         End If
                     End If
                 Case ConsoleKey.Backspace 'Backspace
-                    If Left(Constraints(xord, yord), 1) <> "0" Or Left(Constraints(xord, yord), 2) = "0." Then
-                        Backspace2(Constraints, xord, yord, NoOfVariables, NoOfConstraints)
-                    End If
-                    If Not IsNumeric(Left(Constraints(xord, yord), 1)) And Left(Constraints(xord, yord), 1) <> "-" Then
-                        Constraints(xord, yord) = "0" & Constraints(xord, yord)
-                    End If
-                    If Left(Constraints(xord, yord), 1) = "-" And Not IsNumeric(Mid(Constraints(xord, yord), 2, 1)) Then
-                        Backspace2(Constraints, xord, yord, NoOfVariables, NoOfConstraints)
-                        Constraints(xord, yord) = "0" & Constraints(xord, yord)
-                        Constraints(xord, yord) = "-" & Constraints(xord, yord)
-                    End If
-                Case ConsoleKey.OemPeriod 'Decimal point
-                    If InStr(Constraints(xord, yord), ".") = 0 Then
-                        Console.SetCursorPosition(xord * 9 + 11, yord)
-                        If xord = NoOfVariables Then
-                            Constraints(xord, yord) &= "."
-                        ElseIf NoOfVariables > 9 And xord > 8 Then
-                            Constraints(xord, yord) = Left(Constraints(xord, yord), Len(Constraints(xord, yord)) - 3) & "." & Right(Constraints(xord, yord), 3)
-                        ElseIf NoOfVariables > 3 Then
-                            Constraints(xord, yord) = Left(Constraints(xord, yord), Len(Constraints(xord, yord)) - 2) & "." & Right(Constraints(xord, yord), 2)
-                        Else
-                            Constraints(xord, yord) = Left(Constraints(xord, yord), Len(Constraints(xord, yord)) - 1) & "." & Right(Constraints(xord, yord), 1)
+                    If yord <> NoOfConstraints + 1 Then
+                        If Left(Constraints(xord, yord), 1) <> "0" Or Left(Constraints(xord, yord), 2) = "0." Then
+                            Backspace2(Constraints, xord, yord, NoOfVariables, NoOfConstraints)
                         End If
-                        S(Constraints, xord, yord, NoOfVariables, NoOfConstraints)
-                    End If
-                Case ConsoleKey.OemMinus 'Negative sign
-                    If Left(Constraints(xord, yord), 1) = "-" Then
-                        Constraints(xord, yord) = Constraints(xord, yord).Remove(0, 1)
-                        If Not IsNumeric(Left(Constraints(xord, yord), 1)) Then
+                        If Not IsNumeric(Left(Constraints(xord, yord), 1)) And Left(Constraints(xord, yord), 1) <> "-" Then
                             Constraints(xord, yord) = "0" & Constraints(xord, yord)
                         End If
-                    Else
-                        If Len(Constraints(xord, yord)) < 6 And xord <> NoOfVariables Then
-                            'If Left(Constraints(xord, yord), 1) = "0" And Left(Constraints(xord, yord), 2) <> "0." Then
-                            '    Constraints(xord, yord) = Constraints(xord, yord).Remove(0, 1)
-                            'End If
+                        If Left(Constraints(xord, yord), 1) = "-" And Not IsNumeric(Mid(Constraints(xord, yord), 2, 1)) Then
+                            Backspace2(Constraints, xord, yord, NoOfVariables, NoOfConstraints)
+                            Constraints(xord, yord) = "0" & Constraints(xord, yord)
                             Constraints(xord, yord) = "-" & Constraints(xord, yord)
                         End If
                     End If
+                Case ConsoleKey.OemPeriod 'Decimal point
+                    If yord <> NoOfConstraints + 1 Then
+                        If InStr(Constraints(xord, yord), ".") = 0 Then
+                            Console.SetCursorPosition(xord * 9 + 11, yord)
+                            If xord = NoOfVariables Then
+                                Constraints(xord, yord) &= "."
+                            ElseIf NoOfVariables > 9 And xord > 8 Then
+                                Constraints(xord, yord) = Left(Constraints(xord, yord), Len(Constraints(xord, yord)) - 3) & "." & Right(Constraints(xord, yord), 3)
+                            ElseIf NoOfVariables > 3 Then
+                                Constraints(xord, yord) = Left(Constraints(xord, yord), Len(Constraints(xord, yord)) - 2) & "." & Right(Constraints(xord, yord), 2)
+                            Else
+                                Constraints(xord, yord) = Left(Constraints(xord, yord), Len(Constraints(xord, yord)) - 1) & "." & Right(Constraints(xord, yord), 1)
+                            End If
+                            S(Constraints, xord, yord, NoOfVariables, NoOfConstraints)
+                        End If
+                    End If
+                Case ConsoleKey.OemMinus 'Negative sign
+                    If yord <> NoOfConstraints + 1 Then
+                        If Left(Constraints(xord, yord), 1) = "-" Then
+                            Constraints(xord, yord) = Constraints(xord, yord).Remove(0, 1)
+                            If Not IsNumeric(Left(Constraints(xord, yord), 1)) Then
+                                Constraints(xord, yord) = "0" & Constraints(xord, yord)
+                            End If
+                        Else
+                            If Len(Constraints(xord, yord)) < 6 And xord <> NoOfVariables Then
+                                'If Left(Constraints(xord, yord), 1) = "0" And Left(Constraints(xord, yord), 2) <> "0." Then
+                                '    Constraints(xord, yord) = Constraints(xord, yord).Remove(0, 1)
+                                'End If
+                                Constraints(xord, yord) = "-" & Constraints(xord, yord)
+                            End If
+                        End If
+                    End If
                 Case ConsoleKey.L 'Less than or equal to
-                    Constraints(NoOfVariables + 1, yord) = "L"
-                    Console.SetCursorPosition((NoOfVariables - 1) * 9 + 11, yord)
-                    S(Constraints, NoOfVariables - 1, yord, NoOfVariables, NoOfConstraints)
+                    If yord <> NoOfConstraints + 1 Then
+                        Constraints(NoOfVariables + 1, yord) = "L"
+                        Console.SetCursorPosition((NoOfVariables - 1) * 9 + 11, yord)
+                        S(Constraints, NoOfVariables - 1, yord, NoOfVariables, NoOfConstraints)
+                    End If
                 Case ConsoleKey.E 'Equal to
-                    Constraints(NoOfVariables + 1, yord) = "E"
-                    Console.SetCursorPosition((NoOfVariables - 1) * 9 + 11, yord)
-                    S(Constraints, NoOfVariables - 1, yord, NoOfVariables, NoOfConstraints)
+                    If yord <> NoOfConstraints + 1 Then
+                        Constraints(NoOfVariables + 1, yord) = "E"
+                        Console.SetCursorPosition((NoOfVariables - 1) * 9 + 11, yord)
+                        S(Constraints, NoOfVariables - 1, yord, NoOfVariables, NoOfConstraints)
+                    End If
                 Case ConsoleKey.G 'Greater than or equal to
-                    Constraints(NoOfVariables + 1, yord) = "G"
-                    Console.SetCursorPosition((NoOfVariables - 1) * 9 + 11, yord)
-                    S(Constraints, NoOfVariables - 1, yord, NoOfVariables, NoOfConstraints)
+                    If yord <> NoOfConstraints + 1 Then
+                        Constraints(NoOfVariables + 1, yord) = "G"
+                        Console.SetCursorPosition((NoOfVariables - 1) * 9 + 11, yord)
+                        S(Constraints, NoOfVariables - 1, yord, NoOfVariables, NoOfConstraints)
+                    End If
                 Case ConsoleKey.M 'Switches MAX and MIN
                     If Constraints(NoOfVariables + 1, 0) = "MAX" Then
                         Constraints(NoOfVariables + 1, 0) = "MIN"
@@ -292,26 +304,28 @@
                     End If
 
                 Case Else
-                    key = key - 48 'Converts key into a number
-                    If Len(Constraints(xord, yord)) < 6 Then
-                        If key >= 0 And key <= 9 Then
-                            Console.SetCursorPosition(xord * 9 + 11, yord)
-                            If Left(Constraints(xord, yord), 1) = "0" And Left(Constraints(xord, yord), 2) <> "0." Then
-                                Constraints(xord, yord) = Constraints(xord, yord).Remove(0, 1)
+                    If yord <> NoOfConstraints + 1 Then
+                        key = key - 48 'Converts key into a number
+                        If Len(Constraints(xord, yord)) < 6 Then
+                            If key >= 0 And key <= 9 Then
+                                Console.SetCursorPosition(xord * 9 + 11, yord)
+                                If Left(Constraints(xord, yord), 1) = "0" And Left(Constraints(xord, yord), 2) <> "0." Then
+                                    Constraints(xord, yord) = Constraints(xord, yord).Remove(0, 1)
+                                End If
+                                If Left(Constraints(xord, yord), 2) = "-0" And Left(Constraints(xord, yord), 3) <> "-0." Then
+                                    Constraints(xord, yord) = Constraints(xord, yord).Remove(1, 1)
+                                End If
+                                If xord = NoOfVariables Then
+                                    Constraints(xord, yord) &= key
+                                ElseIf NoOfVariables > 9 And xord > 8 Then
+                                    Constraints(xord, yord) = Left(Constraints(xord, yord), Len(Constraints(xord, yord)) - 3) & key & Right(Constraints(xord, yord), 3)
+                                ElseIf NoOfVariables > 3 Then
+                                    Constraints(xord, yord) = Left(Constraints(xord, yord), Len(Constraints(xord, yord)) - 2) & key & Right(Constraints(xord, yord), 2)
+                                Else
+                                    Constraints(xord, yord) = Left(Constraints(xord, yord), Len(Constraints(xord, yord)) - 1) & key & Right(Constraints(xord, yord), 1)
+                                End If
+                                S(Constraints, xord, yord, NoOfVariables, NoOfConstraints)
                             End If
-                            If Left(Constraints(xord, yord), 2) = "-0" And Left(Constraints(xord, yord), 3) <> "-0." Then
-                                Constraints(xord, yord) = Constraints(xord, yord).Remove(1, 1)
-                            End If
-                            If xord = NoOfVariables Then
-                                Constraints(xord, yord) &= key
-                            ElseIf NoOfVariables > 9 And xord > 8 Then
-                                Constraints(xord, yord) = Left(Constraints(xord, yord), Len(Constraints(xord, yord)) - 3) & key & Right(Constraints(xord, yord), 3)
-                            ElseIf NoOfVariables > 3 Then
-                                Constraints(xord, yord) = Left(Constraints(xord, yord), Len(Constraints(xord, yord)) - 2) & key & Right(Constraints(xord, yord), 2)
-                            Else
-                                Constraints(xord, yord) = Left(Constraints(xord, yord), Len(Constraints(xord, yord)) - 1) & key & Right(Constraints(xord, yord), 1)
-                            End If
-                            S(Constraints, xord, yord, NoOfVariables, NoOfConstraints)
                         End If
                     End If
             End Select

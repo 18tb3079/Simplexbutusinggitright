@@ -2,7 +2,7 @@
     Inherits Tableau
     Private MyNewMenu As IMenu
     Private MyNewTableau As Tableau
-    Public Sub New(mymenu As IMenu, mydisplay As Integer) 'This subprogram creates the simplex tableau
+    Public Sub New(mymenu As IMenu, mydisplay As List(Of Integer)) 'This subprogram creates the simplex tableau
         MyBase.New(mydisplay)
         menu = mymenu
         'This class is different to the other two as it requires an intermidiate step before creating the simplex tableau

@@ -6,9 +6,9 @@
     Protected artificials As Integer 'number of artificial variables
     Protected menu As IMenu
     Private Mode As Integer ' 1 = onestep, 2 = two step, 3 = minimalisation
-    Protected DisplayMode As Integer = 0
+    Protected DisplayMode As List(Of Integer)
 
-    Public Sub New(mymenu As IMenu, mydisplay As Integer) 'This subprogram creates the simplex tableau
+    Public Sub New(mymenu As IMenu, mydisplay As List(Of Integer)) 'This subprogram creates the simplex tableau
         DisplayMode = mydisplay
         menu = mymenu
         Dim inputtableau As String(,) = menu.GetConstraints
@@ -120,7 +120,7 @@
         End If
     End Sub
 
-    Public Sub New(simplextableau As Double(,), MyTopRow As List(Of String), mymenu As IMenu, mydisplay As Integer) 'We need this so we can convert a two step tableau into a one step tableau
+    Public Sub New(simplextableau As Double(,), MyTopRow As List(Of String), mymenu As IMenu, mydisplay As List(Of Integer)) 'We need this so we can convert a two step tableau into a one step tableau
         DisplayMode = mydisplay
         menu = mymenu
         Tableau = simplextableau
@@ -129,7 +129,7 @@
         TopRow = MyTopRow
     End Sub
 
-    Public Sub New(mydisplay As Integer)
+    Public Sub New(mydisplay As List(Of Integer))
         DisplayMode = mydisplay
     End Sub
     Public Function GetMode() As Integer
@@ -171,33 +171,39 @@
     End Sub
 
     Public Sub Display(pivotcolumn As Integer, pivotrow As Integer) 'This subprogram displays the tableau
-        If DisplayMode <> 2 Or pivotcolumn = -2 Then
-            Console.Clear()
+        Console.Clear()
+        For x = 0 To TableLength
+            For i = 6 To Len(TopRow(x)) Step -1 'spacing
+                Console.Write(" ")
+            Next
+            Console.Write(TopRow(x))
+            Console.Write("|")
+        Next
+        Console.WriteLine()
+        For y = 0 To TableHeight
             For x = 0 To TableLength
-                For i = 6 To Len(TopRow(x)) Step -1 'spacing
-                    Console.Write(" ")
-                Next
-                Console.Write(TopRow(x))
+                If x = pivotcolumn And y = pivotrow And DisplayMode(1) = 1 And DisplayMode(2) = 1 Then
+                    Console.ForegroundColor = ConsoleColor.Magenta
+                ElseIf x = pivotcolumn And DisplayMode(2) = 1 Then
+                    Console.ForegroundColor = ConsoleColor.Green
+                ElseIf y = pivotrow And DisplayMode(1) = 1 Then
+                    Console.ForegroundColor = ConsoleColor.Red
+                End If
+                If Len(CStr(Tableau(x, y))) > 7 Then 'more spacing
+                    Console.Write(Mid(Tableau(x, y), 1, 7))
+                Else
+                    For i = 6 To Len(CStr(Tableau(x, y))) Step -1
+                        Console.Write(" ")
+                    Next
+                    Console.Write(Tableau(x, y))
+                End If
+                Console.ForegroundColor = ConsoleColor.Gray
                 Console.Write("|")
             Next
             Console.WriteLine()
-            For y = 0 To TableHeight
-                For x = 0 To TableLength
-                    If Len(CStr(Tableau(x, y))) > 7 Then 'more spacing
-                        Console.Write(Mid(Tableau(x, y), 1, 7))
-                    Else
-                        For i = 6 To Len(CStr(Tableau(x, y))) Step -1
-                            Console.Write(" ")
-                        Next
-                        Console.Write(Tableau(x, y))
-                    End If
-                    Console.Write("|")
-                Next
-                Console.WriteLine()
-            Next
-            Console.Write("Press enter to continue: ")
-            Console.ReadLine()
-        End If
+        Next
+        Console.Write("Press enter to continue: ")
+        Console.ReadLine()
     End Sub
 
 End Class
