@@ -102,7 +102,7 @@
 
     Private Function Menu2(menu1 As List(Of Integer)) As String(,) 'Handles the second menu
         Console.Clear()
-        SideNote("M: switch between maximise and minimise,G: Greater than,E-Equal to,L: Less than", Console.CursorLeft, Console.CursorTop)
+        SideNote("M: switch between maximise and minimise,G: Greater than,E: Equal to,L: Less than", Console.CursorLeft, Console.CursorTop)
 
         NoOfVariables = menu1(0)
         NoOfConstraints = menu1(1)

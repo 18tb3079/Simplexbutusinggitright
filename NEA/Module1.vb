@@ -97,6 +97,9 @@
             If letter = "," Then
                 Console.SetCursorPosition(60, Console.CursorTop + 1)
             Else
+                If Console.CursorLeft = Console.WindowWidth Then
+                    Console.SetCursorPosition(60, Console.CursorTop + 1)
+                End If
                 Console.Write(letter)
             End If
         Next
