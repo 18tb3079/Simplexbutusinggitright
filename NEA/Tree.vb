@@ -77,7 +77,7 @@ Public Class Tree
         ReDim Preserve UserInputTable(tableLength, tableHeight + 1) 'This is to match the formatting of the tableau class
     End Sub
 
-    Sub R(ByRef subgraph As List(Of String), ByRef cycles As List(Of String), currentpath As String) 'recursive subroutine which finds all the cycles
+    Private Sub R(ByRef subgraph As List(Of String), ByRef cycles As List(Of String), currentpath As String) 'recursive subroutine which finds all the cycles
         If currentpath = "" Then
             currentpath = subgraph(0)
         End If

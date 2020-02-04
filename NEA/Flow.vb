@@ -7,8 +7,8 @@
     Public Sub New()
         Dim NextEdgeCount As Integer = -1
         NoOfNodes = OneDMenu(New List(Of String)({"Enter the amount of nodes in the graph"}), "", "Integer")(0) - 1
-        If NoOfNodes <= 0 Or NoOfNodes >= 19 Then
-            Throw New ArgumentException("Number of nodes is out of range (1-19)")
+        If NoOfNodes <= 1 Or NoOfNodes >= 19 Then
+            Throw New ArgumentException("Number of nodes is out of range (2-19)")
         End If
         For i = 0 To NoOfNodes * (NoOfNodes - 1) + 1
             ExistingConnections.Add(1)

@@ -85,8 +85,9 @@
     End Sub
 
     Public Overrides Sub OutputConstraintsFromTableau()
-        Console.WriteLine("lmao havent coded this yet dab yeet")
+        'Necessary so program does not call method from tableau (which will cause an error)
     End Sub
+
     Public Overrides Function Simplex()
         Dim values As List(Of Double) = MyNewTableau.Simplex()
         Dim variables As List(Of String) = menu.VariableNames()

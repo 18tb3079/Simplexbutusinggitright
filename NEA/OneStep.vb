@@ -48,7 +48,7 @@
         Console.Write("  ")
     End Sub
 
-    Private Function MinimiseCompletedTable() 'This subprogram outputs the values but only if it is from a minimisation problem
+    Private Function MinimiseCompletedTable() As List(Of Double) 'This subprogram outputs the values but only if it is from a minimisation problem
         Console.SetCursorPosition(0, Console.CursorTop - 1)
         Console.WriteLine("Tableau is complete! Values for all the variables are shown below: ")
         Dim values As New List(Of Double)

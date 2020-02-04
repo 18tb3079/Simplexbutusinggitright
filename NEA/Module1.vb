@@ -116,10 +116,10 @@
         Dim displaymode As List(Of Integer) = New List(Of Integer)({0, 1, 1})
         Do
             Console.Clear()
-            'Try
-            Do
-                If choice <> 2 Then OptimisationProblem = OneDMenu(New List(Of String)({"Custom Constraints", "Maximal Matching", "Maximum Flow", "Shortest Path", "Minimum Spanning Tree", "Settings"}), "Select Mode", "Blank")(0)
-                If OptimisationProblem = 0 Then
+            Try
+                Do
+                    If choice <> 2 Then OptimisationProblem = OneDMenu(New List(Of String)({"Custom Constraints", "Maximal Matching", "Maximum Flow", "Shortest Path", "Minimum Spanning Tree", "Settings"}), "Select Mode", "Blank")(0)
+                    If OptimisationProblem = 0 Then
                         MyMenu = New SimplexMenu()
                     ElseIf OptimisationProblem = 1 Then
                         MyMenu = New Matching()
@@ -130,43 +130,41 @@
                     ElseIf OptimisationProblem = 4 Then
                         MyMenu = New Tree()
                     ElseIf OptimisationProblem = 5 Then 'Settings
-                    Console.CursorVisible = False
-                    displaymode.Clear()
-                    displaymode.Add(OneDMenu(New List(Of String)({"Display each iteration", "Display each step", "Display only the completed tableau"}), "Select Display Mode", "Blank")(0))
-                    displaymode.AddRange(OneDMenu(New List(Of String)({"Highlight pivot row", "Highlight pivot column"}), "Select Highlighting Options", "Boolean"))
-                Else
+                        Console.CursorVisible = False
+                        displaymode.Clear()
+                        displaymode.Add(OneDMenu(New List(Of String)({"Display each iteration", "Display each step", "Display only the completed tableau"}), "Select Display Mode", "Blank")(0))
+                        displaymode.AddRange(OneDMenu(New List(Of String)({"Highlight pivot row", "Highlight pivot column"}), "Select Highlighting Options", "Boolean"))
+                    Else
                         MyMenu = New SimplexMenu()
                     End If
                 Loop Until OptimisationProblem <> 5
-
                 Dim MyTableau As Tableau
                 Do
                     If MyMenu.GetMode = 1 Then
                         MyTableau = New OneStep(MyMenu, displaymode)
                     ElseIf MyMenu.GetMode = 2 Then
                         MyTableau = New TwoStep(MyMenu, displaymode)
-                    Else ' mode = 3
+                    Else 'mode = 3
                         MyTableau = New MinimiseStep(MyMenu, displaymode)
                     End If
                     MyTableau.OutputConstraintsFromTableau()
                     MyTableau.Simplex()
                     Console.WriteLine(vbCrLf & "Please enter your next action")
                     Console.WriteLine("1. Run the simplex algorithm again with these constraints")
-                    Console.WriteLine("2. Choose different constraints")
-                    Console.WriteLine("3. Go back to the main menu")
-                    Console.WriteLine("4. Exit")
+                    Console.WriteLine("2. Go back to the main menu")
+                    Console.WriteLine("3. Exit")
                     While Console.KeyAvailable
                         choice = Console.ReadKey(True).Key
                     End While
-                choice = Console.ReadKey(True).Key
-            Loop Until choice >= ConsoleKey.D2
-            ' Catch ex As Exception
-            'Console.Clear()
-            'Console.WriteLine(ex.Message)
-            'Console.WriteLine("Press enter to restart: ")
-            'Console.ReadLine()
-            'End Try                                                                                                                                                                                                                                                                 
-        Loop Until choice >= ConsoleKey.D4
+                    choice = Console.ReadKey(True).Key
+                Loop Until choice >= ConsoleKey.D2
+            Catch ex As Exception
+                Console.Clear()
+            Console.WriteLine(ex.Message)
+            Console.WriteLine("Press enter to restart: ")
+            Console.ReadLine()
+            End Try
+        Loop Until choice >= ConsoleKey.D3
     End Sub
 
 End Module
