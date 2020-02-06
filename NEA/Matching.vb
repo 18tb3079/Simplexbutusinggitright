@@ -79,7 +79,7 @@
         Dim variables As New List(Of String)
         For l = 0 To Lsize
             For n = 0 To Nsize
-                If ExistingConnections(l * (Lsize + 1) + n) = 1 Then
+                If ExistingConnections(l * Lsize + n) = 1 Then
                     variables.Add(Chr(65 + l) & n)
                 End If
             Next
